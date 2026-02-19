@@ -28,3 +28,6 @@ def testpage():
 @app.route("/kebab")
 def kebabpage():
     return "<h1>kebab is lekker</h1>"
+
+if __name__ == '__main__':
+    app.run(debug=True)
