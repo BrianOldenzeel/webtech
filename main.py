@@ -24,10 +24,9 @@ def testpage():
         return render_template('main.html', form=form, instrument=instrument)
     return render_template('main.html', form=form)
 
-
-@app.route("/kebab")
-def kebabpage():
-    return "<h1>kebab is lekker</h1>"
+@app.route("/login")
+def loginpage():
+    return render_template("/auth/login.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
