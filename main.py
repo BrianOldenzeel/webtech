@@ -2,13 +2,19 @@ from flask import Flask, render_template
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from flask_sqlalchemy import SQLAlchemy
+from flask_session import Session
 
 app = Flask(__name__)
+
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+app.config["SESSION_PERMANENT"] = False     # Sessions expire when the browser is closed
+app.config["SESSION_TYPE"] = "filesystem"     # Store session data in files
+
 db = SQLAlchemy(app)
+Session(app)
 
 class student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,6 +46,10 @@ def testpage():
 @app.route("/login")
 def loginpage():
     return render_template("/auth/login.html")
+
+@app.route("/register")
+def registerpage():
+    return render_template("/auth/register.html")
 
 if __name__ == '__main__':
     with app.app_context():
