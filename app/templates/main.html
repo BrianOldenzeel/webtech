@@ -15,24 +15,66 @@
           <th class="py-3 px-6 text-left">Bedrijf naam</th>
           <th class="py-3 px-6 text-left">Locatie</th>
           <th class="py-3 px-6 text-left">Studie</th>
+          <th class="py-3 px-6 text-left">Aantal uren</th>
+          <th class="py-3 px-6 text-left">Aantal studenten</th>
           <th class="py-3 px-6 text-left">Beschikbaarheid</th>
+
+          {% if session.get("user_is_student") %}
+          <th class="py-3 px-6 text-left">Aanmelden</th>
+          {% endif %}
+
         </tr>
       </thead>
 
       <tbody class="text-gray-700 text-sm">
+        
+        {% for instelling in instellingen %}
         <tr class="border-b hover:bg-gray-50 transition">
-          <td class="py-3 px-6">dummybedrijf nr1</td>
-          <td class="py-3 px-6">Groningen</td>
-          <td class="py-3 px-6">HBO-ICT</td>
-          <td class="py-3 px-6 text-green-600 font-semibold">Beschikbaar</td>
-        </tr>
+          
+          <td class="py-3 px-6">{{ instelling.naam }}</td>
+          <td class="py-3 px-6">{{ instelling.locatie }}</td>
+          <td class="py-3 px-6">{{ instelling.studie }}</td>
+          <td class="py-3 px-6">{{ instelling.totaal_uren }}</td>
 
-        <tr class="border-b hover:bg-gray-50 transition">
-          <td class="py-3 px-6">dummybedrijf nr2</td>
-          <td class="py-3 px-6">Groningen</td>
-          <td class="py-3 px-6">HBO-ICT</td>
-          <td class="py-3 px-6 text-red-500 font-semibold">Vol</td>
+          <td class="py-3 px-6">
+            {{ instelling.aantal_studenten }} / {{ instelling.max_aantal_studenten }}
+          </td>
+
+          <td class="py-3 px-6 font-semibold
+            {% if instelling.beschikbaar == 1 %}
+              text-red-500
+            {% else %}
+              text-green-600
+            {% endif %}
+          ">
+            {% if instelling.beschikbaar == 1 %}
+              Vol
+            {% else %}
+              Beschikbaar
+            {% endif %}
+          </td>
+
+          {% if session.get("user_is_student") %}
+          <td class="py-3 px-6">
+            {% if instelling.beschikbaar == 0 %}
+            <form method="POST" action="/">
+                <input type="hidden" name="instelling_id" value="{{ instelling.id }}">
+                <input type="hidden" name="instelling_totaal_uren" value="{{ instelling.totaal_uren }}">
+              <button class="w-32 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                Aanmelden
+              </button>
+            </form>
+            {% else %}
+              <button class="w-32 bg-gray-400 text-white py-2 rounded-lg cursor-not-allowed opacity-70" disabled>
+                Niet beschikbaar
+              </button>
+            {% endif %}
+          </td>
+          {% endif %}
+
         </tr>
+        {% endfor %}
+
       </tbody>
 
     </table>

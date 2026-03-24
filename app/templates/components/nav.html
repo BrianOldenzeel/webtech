@@ -2,25 +2,38 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between h-16 items-center">
 
-            <!-- Logo -->
             <a href="/" class="text-xl font-bold">
                 Stagefinder.nl
             </a>
 
-            <!-- Links -->
             <div class="space-x-6 hidden md:flex">
-                <a href="/register" class="hover:text-gray-300">Registreer</a>
-                <a href="/login" class="hover:text-gray-300">Login</a>
-            </div>
+                
+                {% if session.get("user_is_student") %}
+                    <a href="/profile" class="hover:text-gray-300">{{ voornaam }}</a>
+                    <a href="/logout" class="hover:text-gray-300">Log uit</a>
 
-            <!-- Mobile menu button -->
+                {% elif session.get("user_is_begeleider") %}
+                    <a href="/beheer" class="hover:text-gray-300">Beheer</a>
+                    <a href="/logout" class="hover:text-gray-300">Log uit</a>
+
+                {% elif session.get("user_is_bedrijf_eigenaar") %}
+                    <a href="/bedrijf-dashboard" class="hover:text-gray-300">Dashboard</a>
+                    <a href="/logout" class="hover:text-gray-300">Log uit</a>
+
+                {% else %}
+                    <a href="/register" class="hover:text-gray-300">Registreer</a>
+                    <a href="/login" class="hover:text-gray-300">Login</a>
+
+                {% endif %}
+
+                </div>
+
             <button id="menu-btn" class="md:hidden focus:outline-none">
                 ☰
             </button>
         </div>
     </div>
 
-    <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
         <a href="/register" class="block py-2">Registreer</a>
         <a href="/login" class="block py-2">Login</a>

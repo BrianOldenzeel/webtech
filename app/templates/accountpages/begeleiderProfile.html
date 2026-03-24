@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Stages{% endblock %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto">
+  <h2 class="text-3xl font-bold mb-6">Stage verzoeken van studenten</h2>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded-2xl shadow-md overflow-hidden">
+
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm">
+        <tr>
+          <th class="py-3 px-6 text-left">Student</th>
+          <th class="py-3 px-6 text-left">Stage plek</th>
+          <th class="py-3 px-6 text-left">Status</th>
+          <th class="py-3 px-6 text-left">Uren</th>
+        </tr>
+      </thead>
+
+      <tbody class="text-gray-700 text-sm">
+
+        {% for stage in stages %}
+
+        <tr>
+          <td colspan="4" class="p-0">
+
+            <details class="group">
+
+              <!-- clickable summary row -->
+              <summary class="list-none cursor-pointer hover:bg-gray-50 transition">
+                <div class="flex items-center border-b">
+
+                  <div class="py-3 px-6 w-1/4 font-medium">
+                    {{ stage.student.voornaam }} {{ stage.student.achternaam }}
+                  </div>
+
+                  <div class="py-3 px-6 w-1/4">
+                    {{ stage.instelling.naam }}
+                  </div>
+
+                  <div class="py-3 px-6 w-1/4 font-semibold
+                    {% if stage.status == "Begonnen" %}
+                      text-blue-500
+                    {% else %}
+                      text-gray-500
+                    {% endif %}
+                  ">
+                    {{ stage.status }}
+                  </div>
+
+                  <div class="py-3 px-6 w-1/4">
+                    {{ stage.totaal_uren }}
+                  </div>
+
+                </div>
+              </summary>
+
+              <!-- dropdown content -->
+              <div class="bg-gray-50 px-6 py-8 border-b">
+
+                <div class="flex items-center justify-between">
+
+                  {% set steps = ["Aangemeld", "Geaccepteerd door bedrijf", "Begonnen", "Afgerond"] %}
+
+                  {% for step in steps %}
+                  <div class="flex flex-col items-center relative">
+
+                    <!-- circle -->
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center text-sm font-bold
+                      {% if steps.index(step) <= steps.index(stage.status) %}
+                        bg-blue-500 text-white
+                      {% else %}
+                        bg-gray-300 text-gray-600
+                      {% endif %}
+                    ">
+                      {% if steps.index(step) < steps.index(stage.status) %}
+                        ✓
+                      {% else %}
+                        {{ loop.index }}
+                      {% endif %}
+                    </div>
+
+                    <span class="mt-2 text-sm text-center w-28">
+                      {{ step }}
+                    </span>
+
+                  </div>
+                  {% endfor %}
+
+                </div>
+                <div class="flex items-center justify-center mt-10">
+                  {% if stage.status == "Geaccepteerd door bedrijf" %}
+                    <button class="w-52 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                      Accepteer
+                    </button>
+                  </form>
+                  {% else %}
+                    <button class="w-52 bg-gray-400 text-white py-2 rounded-lg cursor-not-allowed opacity-70" disabled>
+                      Wacht tot het bedrijf geaccepteerd heeft
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+
+            </details>
+
+          </td>
+        </tr>
+
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+  </div>
+</div>
+
+{% endblock %}
