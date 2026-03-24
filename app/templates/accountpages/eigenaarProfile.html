@@ -91,26 +91,13 @@
 
                 </div>
                 <div class="flex items-center justify-center mt-10">
-                  {% if stage.status == "Geaccepteerd door bedrijf" %}
-                  <form method="POST" action="/beheer">
+                  {% if stage.status == "Aangemeld" %}
+                  <form  method="POST" action="/bedrijf-dashboard">
                     <input type="hidden" name="stage_id" value="{{ stage.id }}">
-                    <input type="hidden" name="form_type" value="start_stage">
                     <button class="w-52 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
-                      Start stage
+                        Accepteer verzoek
                     </button>
                   </form>
-                  {% elif stage.status == "Aangemeld" %}
-                    <button class="w-52 bg-gray-400 text-white py-2 rounded-lg cursor-not-allowed opacity-70" disabled>
-                      Wacht tot het bedrijf geaccepteerd heeft
-                    </button>
-                    {% elif stage.status == "Begonnen" %}
-                    <form method="POST" action="/beheer">
-                      <input type="hidden" name="stage_id" value="{{ stage.id }}">
-                      <input type="hidden" name="form_type" value="stop_stage">
-                      <button class="w-52 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
-                        Rond stage af
-                      </button>
-                    </form>
                   {% endif %}
                 </div>
               </div>

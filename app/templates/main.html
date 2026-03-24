@@ -47,7 +47,7 @@
               text-green-600
             {% endif %}
           ">
-            {% if instelling.beschikbaar == 1 %}
+            {% if instelling.aantal_studenten >= instelling.max_aantal_studenten %}
               Vol
             {% else %}
               Beschikbaar
@@ -56,7 +56,7 @@
 
           {% if session.get("user_is_student") %}
           <td class="py-3 px-6">
-            {% if instelling.beschikbaar == 0 %}
+            {% if instelling.aantal_studenten < instelling.max_aantal_studenten %}
             <form method="POST" action="/">
                 <input type="hidden" name="instelling_id" value="{{ instelling.id }}">
                 <input type="hidden" name="instelling_totaal_uren" value="{{ instelling.totaal_uren }}">

@@ -7,11 +7,22 @@ main = Blueprint("main", __name__)
 @main.route("/", methods=["GET", "POST"])
 def homepage():
     instellingen = Instelling.query.all()
+
     if request.method == "POST":
         if not session.get("user_id"):
             return redirect("/login")
         
         user_id = session.get("user_id")
+
+        # Check if user already has an active stage
+        existing_stage = Stage.query.filter(
+            Stage.student_id == user_id,
+            Stage.status.in_(["Aangemeld", "Geaccepteerd door bedrijf", "Begonnen"])
+        ).first()
+
+        if existing_stage:
+            return "Je hebt al een actieve stage!"
+
         instelling_id = request.form.get("instelling_id")
         aantal_uren = request.form.get("instelling_totaal_uren")
 
@@ -21,15 +32,6 @@ def homepage():
             status="Aangemeld",
             totaal_uren=aantal_uren,
         )
-
-        existing_stage = Stage.query.filter_by(
-            student_id=user_id,
-            status="Aangemeld"
-        ).first()
-
-        if existing_stage:
-            return "Je hebt al een stage die begonnen is!"
-
 
         db.session.add(new_stage)
         db.session.commit()
