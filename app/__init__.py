@@ -1,8 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
+from flask_bcrypt import Bcrypt
+from flask_wtf import FlaskForm
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 def create_app():
     app = Flask(__name__)
@@ -14,6 +17,7 @@ def create_app():
 
     db.init_app(app)
     Session(app)
+    bcrypt.init_app(app)
 
     # import and register routes
     from .routes.main import main
