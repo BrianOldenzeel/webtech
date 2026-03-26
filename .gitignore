@@ -7,3 +7,4 @@ flask_session/
 .DS_Store
 Thumbs.db
 pyvenv.cfg
+flask_session/
