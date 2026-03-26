@@ -14,7 +14,6 @@ def homepage():
         
         user_id = session.get("user_id")
 
-        # Check if user already has an active stage
         existing_stage = Stage.query.filter(
             Stage.student_id == user_id,
             Stage.status.in_(["Aangemeld", "Geaccepteerd door bedrijf", "Begonnen"])
